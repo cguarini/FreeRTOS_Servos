@@ -45,6 +45,7 @@ int getWait(int servo);
 int addToWaitCounter(int servo, int amount);
 void restartRecipe(int servo);
 void sweepServo(int servo);
+void recipe_task_init(int id, char *task_name);
 
 #endif /* RECIPENEW_H */
 

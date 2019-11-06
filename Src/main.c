@@ -63,11 +63,12 @@
 #include "print_task.h"
 #include "SysClock.h"
 #include "LED.h"
-#include "UART.h"
 #include "Timer.h"
 #include "GPIOINP.h"
 #include "servo.h"
 #include "recipeProcessor.h"
+#include "user_input_task.h"
+#include "print_servo_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -124,29 +125,30 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
-  
-  System_Clock_Init(); // Switch System Clock = 80 MHz
-	UART2_Init();
-  initGPIOA();
-  initTIM2(); //1MHz clock frequency
-  LED_Init();
-  initTIM3();
 
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_RNG_Init();
   MX_USART2_UART_Init();
+  initGPIOA();
+  initTIM2(); //1MHz clock frequency
+  LED_Init();
+  initTIM3();
   /* USER CODE BEGIN 2 */
+  recipe_task_init(0, "RECIPE_TASK_0");
+  recipe_task_init(1, "RECIPE_TASK_1");
+  user_input_task_init();
+
+
+  printWelcome();
+  printPrompt();
 
 
   
   // USART_Printf is printf() customized to this platform and uses a variable argugment list.
   // It is convenient but unnecessary.  You can use HAL functions (e.g. HAL_USART_Transmit())
-  USART_Printf("----------BANK IS OPEN FOR BUSINESS, BEGIN DAY----------\r\n");
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

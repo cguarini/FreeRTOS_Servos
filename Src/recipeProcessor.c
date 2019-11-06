@@ -25,9 +25,6 @@ RECIPE_PARAMS_t recipe_params[2];
 
 uint32_t recipe1[RECIPE_LIMIT] = {
 MOV+0,
-WAIT+10,
-DM+2,
-WAIT+31,
 MOV+1,
 MOV+5,
 MOV+1,
@@ -213,14 +210,17 @@ void recipe_task(void *parameters)
 				programCounter[i]++;
 			}
 		}
+    
+    //Set LEDs to error states if needed
+    setLEDs();
 		
 		//Decrement or reset the wait cycles for this servo
+    vTaskDelay(100);
 		waitCounter[i]--;
 		if(waitCounter[i] < 0){
 			waitCounter[i] = getWait(i);
 		}
 	}
-  setLEDs();
 }
 
 
